@@ -49,7 +49,7 @@ export default function Spreadsheet() {
   });
 
   return (
-    <table className="table-auto border-2 border-border">
+    <table className="table-auto border-2 border-border-table">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="text-secondary-foreground bg-secondary">
@@ -57,7 +57,7 @@ export default function Spreadsheet() {
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className="border-2 border-border text-left p-2"
+                className="border-2 border-border-table text-left p-2"
                 style={{ minWidth: `${header.column.getSize()}px` }}
               >
                 {flexRender(header.column.columnDef.header, header.getContext())}
@@ -72,7 +72,7 @@ export default function Spreadsheet() {
           return (
             <tr key={row.id} className="p-2 hover:bg-secondary/20">
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border-2 border-border">
+                <td key={cell.id} className="border-2 border-border-table">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

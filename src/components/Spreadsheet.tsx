@@ -52,7 +52,7 @@ export default function Spreadsheet() {
     <table className="table-auto border-2 border-border-table">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id} className="text-secondary-foreground bg-secondary">
+          <tr key={headerGroup.id} className="text-tertiary-foreground bg-secondary">
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}

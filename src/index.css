@@ -3,47 +3,41 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-tertiary-foreground: var(--tertiary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-destructive: var(--destructive);
   --color-border: var(--border);
   --color-border-table: var(--border-table);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 :root {
   --background: #ffffff;
   --foreground: #121212;
-  --primary: #4B6A4F;
-  --primary-foreground: #F6F6F6;
+  --primary: #4b6a4f;
+  --primary-foreground: #f6f6f6;
   --secondary: #eeeeee;
-  --secondary-foreground: #757575;
+  --secondary-foreground: #545454;
+  --tertiary-foreground: #757575;
   --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: #AFAFAF;
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
+  --muted-foreground: #afafaf;
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: #EEEEEE;
+  --border: #eeeeee;
   --border-table: #f6f6f6;
   --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
+  --ring: #4b6a4f;
 
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -56,21 +50,21 @@
 }
 
 ::-webkit-scrollbar {
-    width:6px;
-    height:6px;
-} 
+  width: 6px;
+  height: 6px;
+}
 
 ::-webkit-scrollbar-track {
-    background: var(--secondary);
-    border-radius: 5px;
+  background: var(--secondary);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--secondary-foreground);
-    border-radius: 5px;
+  background: var(--secondary-foreground);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-black);
-    border-radius: 5px;
+  background: var(--color-black);
+  border-radius: 5px;
 }

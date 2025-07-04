@@ -11,7 +11,7 @@ export type FieldType = {
   estValue: string;
 };
 
-export const emptyField: FieldType[] = Array.from({ length: 30 }, (_, i) => ({
+export const emptyField: FieldType[] = Array.from({ length: 45 }, (_, i) => ({
   id: i + 1,
   request: '',
   submitted: '',

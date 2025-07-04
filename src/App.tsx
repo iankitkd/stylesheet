@@ -1,3 +1,4 @@
+import BottomBar from './components/BottomBar';
 import Spreadsheet from './components/Spreadsheet';
 import ToolBar from './components/ToolBar';
 import TopBar from './components/TopBar';
@@ -11,6 +12,7 @@ function App() {
         <div className="overflow-auto">
           <Spreadsheet />
         </div>
+        <BottomBar />
       </main>
     </div>
   );

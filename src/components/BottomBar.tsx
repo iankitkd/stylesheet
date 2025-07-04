@@ -26,7 +26,7 @@ export default function BottomBar() {
       ))}
 
       <button className="p-2 hover:bg-[#E8F0E9]">
-        <img src="src\assets\icons\Plus.svg" alt="Plus icon" />
+        <img src="/icons/Plus.svg" alt="Plus icon" />
       </button>
     </div>
   );

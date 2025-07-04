@@ -49,6 +49,17 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  width: 0px;
+  height: opx;
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

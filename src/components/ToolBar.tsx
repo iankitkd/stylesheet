@@ -3,46 +3,46 @@ export default function ToolBar() {
     <div className="w-full flex justify-between items-center py-1 border-b border-border">
       {/* left side */}
       <div className="flex gap-1 items-center">
-        <button className="flex items-center justify-center gap-1 w-22 py-2 rounded-md hover:bg-secondary/30">
+        <button className="hidden md:flex items-center justify-center gap-1 w-22 py-2 rounded-md hover:bg-secondary/30">
           <p>Tool bar</p>
           <img src="/icons/ChevronDouble.svg" alt="ChevronDouble icon" />
         </button>
-        <div className="w-1 h-5 border-r-2 border-border"></div>
-        <button className="flex items-center justify-center gap-1 w-30 py-2 rounded-md hover:bg-secondary/30">
+        <div className="hidden md:block w-1 h-5 border-r-2 border-border"></div>
+        <button className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30">
           <img src="/icons/Eye.svg" alt="Eye icon" />
-          <p>Hide fields</p>
+          <p className="hidden lg:block">Hide fields</p>
         </button>
-        <button className="flex items-center justify-center gap-1 w-22 py-2 rounded-md hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30">
           <img src="/icons/Sort.svg" alt="Sort icon" />
-          <p>Sort</p>
+          <p className="hidden lg:block">Sort</p>
         </button>
-        <button className="flex items-center justify-center gap-1 w-22 py-2 rounded-md hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30">
           <img src="/icons/Filter.svg" alt="Filter icon" />
-          <p>Filter</p>
+          <p className="hidden lg:block">Filter</p>
         </button>
-        <button className="flex items-center justify-center gap-1 w-30 py-2 rounded-md hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30">
           <img src="/icons/ArrowAutofit.svg" alt="Arrow Autofit icon" />
-          <p>Cell View</p>
+          <p className="hidden lg:block">Cell View</p>
         </button>
       </div>
 
       {/* right side */}
       <div className="flex gap-1">
-        <button className="flex items-center justify-center gap-1 w-22 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
           <img src="/icons/Download.svg" alt="Download icon" />
-          <p>Import</p>
+          <p className="hidden lg:block">Import</p>
         </button>
-        <button className="flex items-center justify-center gap-1 w-22 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
           <img src="/icons/Upload.svg" alt="Upload icon" />
-          <p>Export</p>
+          <p className="hidden lg:block">Export</p>
         </button>
-        <button className="flex items-center justify-center gap-1 w-22 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
           <img src="/icons/Share.svg" alt="Share icon" />
-          <p>Share</p>
+          <p className="hidden lg:block">Share</p>
         </button>
-        <button className="flex items-center justify-center gap-1 w-38 py-2 rounded-md bg-primary text-white hover:bg-primary/90">
+        <button className="flex items-center justify-center gap-1 lg:w-38 px-2 py-2 rounded-md bg-primary text-white hover:bg-primary/90">
           <img src="/icons/ArrowSplit.svg" alt="Arrow split icon" />
-          <p>New Action</p>
+          <p className="hidden lg:block">New Action</p>
         </button>
       </div>
     </div>

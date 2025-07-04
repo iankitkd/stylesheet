@@ -1,33 +1,46 @@
 import { useState } from 'react';
 
-const tabs = ['All Orders', 'Pending', 'Reviewed', 'Arrived'];
+const initialTabs = ['All Orders', 'Pending', 'Reviewed', 'Arrived'];
 
 export default function BottomBar() {
+  const [tabs, setTabs] = useState(initialTabs);
   const [activeTab, setActiveTab] = useState('All Orders');
+
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
   };
 
+  const handleNewTabClick = () => {
+    const length = tabs.length;
+    setTabs((prev) => [...prev, `Tab ${length + 1}`]);
+    setActiveTab(`Tab ${length + 1}`);
+  };
+
   return (
-    <div className="w-full flex items-center gap-[2px] pt-1 border-t border-border">
-      <div className="w-8"></div>
+    <div className="">
+      <div className="flex items-center gap-[2px] pt-1 border-t border-border overflow-x-scroll whitespace-nowrap scrollbar-hide">
+        <div className="hidden md:block w-8"></div>
 
-      {tabs.map((tab) => (
+        {tabs.map((tab) => (
+          <button
+            className={`px-2 py-2 lg:px-4 lg:py-2 min-w-26 hover:bg-[#E8F0E9] border-[#4B6A4F] cursor-pointer ${
+              tab === activeTab
+                ? 'font-semibold bg-[#E8F0E9] text-[#3E5741] border-t-2'
+                : 'font-medium text-tertiary-foreground'
+            }`}
+            onClick={() => handleTabClick(tab)}
+          >
+            {tab}
+          </button>
+        ))}
+
         <button
-          className={`px-4 py-2 hover:bg-[#E8F0E9] border-[#4B6A4F] ${
-            tab === activeTab
-              ? 'font-semibold bg-[#E8F0E9] text-[#3E5741] border-t-2'
-              : 'font-medium text-tertiary-foreground'
-          }`}
-          onClick={() => handleTabClick(tab)}
+          className="p-2 min-w-10 hover:bg-[#E8F0E9] cursor-pointer"
+          onClick={() => handleNewTabClick()}
         >
-          {tab}
+          <img src="/icons/Plus.svg" alt="Plus icon" />
         </button>
-      ))}
-
-      <button className="p-2 hover:bg-[#E8F0E9]">
-        <img src="/icons/Plus.svg" alt="Plus icon" />
-      </button>
+      </div>
     </div>
   );
 }

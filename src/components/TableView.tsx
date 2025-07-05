@@ -7,7 +7,7 @@ export default function TableView() {
 
   return (
     <table className="table-auto border-2 border-border-table">
-      <thead>
+      <thead className="sticky top-0">
         {getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="text-tertiary-foreground bg-secondary">
             {headerGroup.headers.map((header) => (

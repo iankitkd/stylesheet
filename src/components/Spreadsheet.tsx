@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
 
-import type { RowData } from '@tanstack/react-table';
+import type { ColumnDef, RowData } from '@tanstack/react-table';
 
 import { TableProvider } from '../contexts/TableContext';
 import { getColumns } from './columns';
@@ -21,8 +21,8 @@ declare module '@tanstack/react-table' {
 }
 
 export default function Spreadsheet() {
-  const columns = useMemo(() => getColumns(), []);
   const [data, setData] = useState<FieldType[]>([...field, ...emptyField]);
+  const [columns, setColumns] = useState<ColumnDef<any, any>[]>(getColumns());
 
   const table = useReactTable({
     data,
@@ -52,11 +52,11 @@ export default function Spreadsheet() {
     <TableProvider value={table}>
       <div className="flex flex-col w-full h-full">
         <TopBar />
-        <ToolBar />
-        <div className="overflow-auto">
+        <ToolBar setData={setData} setColumns={setColumns} />
+        <div className="overflow-auto flex-1">
           <TableView />
         </div>
-        <BottomBar />
+        <BottomBar setData={setData} setColumns={setColumns} />
       </div>
     </TableProvider>
   );

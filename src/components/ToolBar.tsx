@@ -1,9 +1,17 @@
+import type { ColumnDef } from '@tanstack/react-table';
+
 import { useTableContext } from '../contexts/TableContext';
 
 import { exportToPDF } from '../utils/tableExport';
 import { navigatorShare } from '../utils/navigatorShare';
+import { importTableFromExcel } from '../utils/tableImport';
 
-export default function ToolBar() {
+interface ToolBarProps {
+  setData: (data: any[]) => void;
+  setColumns: (columns: ColumnDef<any, any>[]) => void;
+}
+
+export default function ToolBar({ setData, setColumns }: ToolBarProps) {
   const table = useTableContext();
   const { getHeaderGroups, getRowModel } = table;
 
@@ -22,6 +30,24 @@ export default function ToolBar() {
     });
 
     exportToPDF(exportColumns, exportData);
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const result = evt.target?.result;
+      console.log('result', result);
+      if (!result) return;
+
+      const { data, columns } = importTableFromExcel(result as ArrayBuffer);
+      console.log('data', data, columns);
+      setData(data);
+      setColumns(columns);
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   const handleShare = () => {
@@ -57,10 +83,14 @@ export default function ToolBar() {
 
       {/* right side */}
       <div className="flex gap-1">
-        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer">
+        <label
+          htmlFor="file"
+          className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
+        >
           <img src="/icons/Download.svg" alt="Download icon" />
           <p className="hidden lg:block">Import</p>
-        </button>
+          <input id="file" type="file" accept=".xlsx, .xls" onChange={handleFileUpload} hidden />
+        </label>
         <button
           className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
           onClick={handleExport}

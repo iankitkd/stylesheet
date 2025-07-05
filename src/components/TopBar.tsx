@@ -7,7 +7,10 @@ export default function TopBar() {
       <div className="flex justify-between items-center py-1 border-b border-border overflow-x-scroll whitespace-nowrap scrollbar-hide">
         {/* left side */}
         <div className="flex gap-1 items-center">
-          <div className="px-2 py-2 text-[#618666] hover:bg-primary/10 rounded-md">
+          <div
+            className="px-2 py-2 text-[#618666] hover:bg-primary/10 rounded-md"
+            onClick={() => (window.location.href = '/')}
+          >
             <img src="/icons/Panel.svg" alt="Panel icon" />
           </div>
           <div className="hidden md:flex items-center">

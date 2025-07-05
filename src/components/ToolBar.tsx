@@ -39,11 +39,9 @@ export default function ToolBar({ setData, setColumns }: ToolBarProps) {
     const reader = new FileReader();
     reader.onload = (evt) => {
       const result = evt.target?.result;
-      console.log('result', result);
       if (!result) return;
 
       const { data, columns } = importTableFromExcel(result as ArrayBuffer);
-      console.log('data', data, columns);
       setData(data);
       setColumns(columns);
     };

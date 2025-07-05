@@ -7,7 +7,7 @@ import type { ColumnDef, RowData } from '@tanstack/react-table';
 import { TableProvider } from '../contexts/TableContext';
 import { getColumns } from './columns';
 
-import { emptyField, field } from '../data';
+import { field, getEmptyField } from '../data';
 import type { FieldType } from '../data';
 import TopBar from './TopBar';
 import ToolBar from './ToolBar';
@@ -21,7 +21,7 @@ declare module '@tanstack/react-table' {
 }
 
 export default function Spreadsheet() {
-  const [data, setData] = useState<FieldType[]>([...field, ...emptyField]);
+  const [data, setData] = useState<FieldType[]>([...field, ...getEmptyField(45)]);
   const [columns, setColumns] = useState<ColumnDef<any, any>[]>(getColumns());
 
   const table = useReactTable({

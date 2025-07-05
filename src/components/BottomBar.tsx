@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 
-import { emptyField, field } from '../data';
+import { field, getEmptyField } from '../data';
 import { getColumns } from './columns';
 
 const initialTabs = ['All Orders', 'Pending', 'Reviewed', 'Arrived'];
@@ -19,10 +19,10 @@ export default function BottomBar({ setData, setColumns }: BottomBarProps) {
     setActiveTab(tab);
     console.log(tab, 'tab');
     if (tab === initialTabs[0]) {
-      setData([...field, ...emptyField]);
+      setData([...field, ...getEmptyField(45)]);
       setColumns(getColumns());
     } else {
-      setData(emptyField);
+      setData(getEmptyField(50));
     }
   };
 
@@ -30,8 +30,8 @@ export default function BottomBar({ setData, setColumns }: BottomBarProps) {
     const length = tabs.length;
     setTabs((prev) => [...prev, `Tab ${length + 1}`]);
     setActiveTab(`Tab ${length + 1}`);
-    setData(emptyField);
-    setColumns([]);
+    setData(getEmptyField(50));
+    setColumns([getColumns()[0]]);
   };
 
   return (

@@ -6,7 +6,7 @@ export default function TableView() {
   const { getHeaderGroups, getRowModel } = table;
 
   return (
-    <table className="table-auto border-2 border-border-table">
+    <table className="table-auto border-0 border-border-table">
       <thead className="sticky top-0">
         {getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="text-tertiary-foreground bg-secondary">
@@ -14,7 +14,7 @@ export default function TableView() {
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className="border-2 border-border-table text-left p-2"
+                className="border-x border-border-table text-left p-2"
                 style={{ minWidth: `${header.column.getSize()}px` }}
               >
                 {flexRender(header.column.columnDef.header, header.getContext())}

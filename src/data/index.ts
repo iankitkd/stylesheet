@@ -10,19 +10,20 @@ export type FieldType = {
   dueDate: string;
   estValue: string;
 };
-
-export const emptyField: FieldType[] = Array.from({ length: 45 }, (_, i) => ({
-  id: i + 1,
-  request: '',
-  submitted: '',
-  status: '',
-  submitter: '',
-  url: '',
-  assigned: '',
-  priority: '',
-  dueDate: '',
-  estValue: '',
-}));
+export function getEmptyField(length: number): FieldType[] {
+  return Array.from({ length: length }, (_, i) => ({
+    id: i + 1,
+    request: '',
+    submitted: '',
+    status: '',
+    submitter: '',
+    url: '',
+    assigned: '',
+    priority: '',
+    dueDate: '',
+    estValue: '',
+  }));
+}
 
 export const field: FieldType[] = [
   {

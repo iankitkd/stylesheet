@@ -1,18 +1,18 @@
 import { useMemo, useState } from 'react';
 
-import {
-  useReactTable,
-  getCoreRowModel,
-  getFilteredRowModel,
-  flexRender,
-} from '@tanstack/react-table';
+import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
 
 import type { RowData } from '@tanstack/react-table';
 
+import { TableProvider } from '../contexts/TableContext';
+import { getColumns } from './columns';
+
 import { emptyField, field } from '../data';
 import type { FieldType } from '../data';
-
-import { getColumns } from './columns';
+import TopBar from './TopBar';
+import ToolBar from './ToolBar';
+import BottomBar from './BottomBar';
+import TableView from './TableView';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -49,37 +49,15 @@ export default function Spreadsheet() {
   });
 
   return (
-    <table className="table-auto border-2 border-border-table">
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id} className="text-tertiary-foreground bg-secondary">
-            {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                colSpan={header.colSpan}
-                className="border-2 border-border-table text-left p-2"
-                style={{ minWidth: `${header.column.getSize()}px` }}
-              >
-                {flexRender(header.column.columnDef.header, header.getContext())}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-
-      <tbody>
-        {table.getRowModel().rows.map((row) => {
-          return (
-            <tr key={row.id} className="p-2 hover:bg-secondary/20">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="border-2 border-border-table">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <TableProvider value={table}>
+      <div className="flex flex-col w-full h-full">
+        <TopBar />
+        <ToolBar />
+        <div className="overflow-auto">
+          <TableView />
+        </div>
+        <BottomBar />
+      </div>
+    </TableProvider>
   );
 }

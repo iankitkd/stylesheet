@@ -36,7 +36,7 @@ export default function BottomBar() {
 
         <button
           className="p-2 min-w-10 hover:bg-[#E8F0E9] cursor-pointer"
-          onClick={() => handleNewTabClick()}
+          onClick={handleNewTabClick}
         >
           <img src="/icons/Plus.svg" alt="Plus icon" />
         </button>

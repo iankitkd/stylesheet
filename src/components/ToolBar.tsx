@@ -1,4 +1,33 @@
+import { useTableContext } from '../contexts/TableContext';
+
+import { exportToPDF } from '../utils/tableExport';
+import { navigatorShare } from '../utils/navigatorShare';
+
 export default function ToolBar() {
+  const table = useTableContext();
+  const { getHeaderGroups, getRowModel } = table;
+
+  const handleExport = () => {
+    const exportColumns = getHeaderGroups()[0].headers.map((header) => ({
+      header: String(header.column.columnDef.header),
+      dataKey: header.column.id,
+    }));
+
+    const exportData = getRowModel().rows.map((row) => {
+      const rowData: { [key: string]: any } = {};
+      row.getAllCells().forEach((cell) => {
+        rowData[cell.column.id] = cell.getValue();
+      });
+      return rowData;
+    });
+
+    exportToPDF(exportColumns, exportData);
+  };
+
+  const handleShare = () => {
+    navigatorShare('/');
+  };
+
   return (
     <div className="w-full flex justify-between items-center py-1 border-b border-border">
       {/* left side */}
@@ -28,19 +57,25 @@ export default function ToolBar() {
 
       {/* right side */}
       <div className="flex gap-1">
-        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
+        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer">
           <img src="/icons/Download.svg" alt="Download icon" />
           <p className="hidden lg:block">Import</p>
         </button>
-        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
+        <button
+          className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
+          onClick={handleExport}
+        >
           <img src="/icons/Upload.svg" alt="Upload icon" />
           <p className="hidden lg:block">Export</p>
         </button>
-        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30">
+        <button
+          className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
+          onClick={handleShare}
+        >
           <img src="/icons/Share.svg" alt="Share icon" />
           <p className="hidden lg:block">Share</p>
         </button>
-        <button className="flex items-center justify-center gap-1 lg:w-38 px-2 py-2 rounded-md bg-primary text-white hover:bg-primary/90">
+        <button className="flex items-center justify-center gap-1 lg:w-38 px-2 py-2 rounded-md bg-primary text-white hover:bg-primary/90 hover:cursor-pointer">
           <img src="/icons/ArrowSplit.svg" alt="Arrow split icon" />
           <p className="hidden lg:block">New Action</p>
         </button>

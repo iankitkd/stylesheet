@@ -1,113 +1,153 @@
-import type { ColumnDef } from '@tanstack/react-table';
+import { useState } from 'react';
+import {
+  Bold,
+  Italic,
+  Underline,
+  Strikethrough,
+  AlignLeft,
+  AlignCenter,
+  AlignRight,
+  AlignJustify,
+  Undo,
+  Redo,
+  Eraser,
+} from 'lucide-react';
+import { cn } from '../lib/utils';
 
-import { useTableContext } from '../contexts/TableContext';
+const fontSizes = ['12px', '14px', '16px', '18px', '24px', '32px'];
+const fontFamilies = ['Arial', 'Georgia', 'Times New Roman', 'Verdana', 'Courier New'];
 
-import { exportToPDF } from '../utils/tableExport';
-import { navigatorShare } from '../utils/navigatorShare';
-import { importTableFromExcel } from '../utils/tableImport';
+type Alignment = 'left' | 'center' | 'right' | 'justify';
 
-interface ToolBarProps {
-  setData: (data: any[]) => void;
-  setColumns: (columns: ColumnDef<any, any>[]) => void;
-}
+export default function Toolbar() {
+  const [isBold, setIsBold] = useState(false);
+  const [isItalic, setIsItalic] = useState(false);
+  const [isUnderline, setIsUnderline] = useState(false);
+  const [isStrikethrough, setIsStrikethrough] = useState(false);
+  const [alignment, setAlignment] = useState<Alignment>('left');
+  const [fontSize, setFontSize] = useState('16px');
+  const [fontFamily, setFontFamily] = useState('Arial');
 
-export default function ToolBar({ setData, setColumns }: ToolBarProps) {
-  const table = useTableContext();
-  const { getHeaderGroups, getRowModel } = table;
+  const handleUndo = () => {};
 
-  const handleExport = () => {
-    const exportColumns = getHeaderGroups()[0].headers.map((header) => ({
-      header: String(header.column.columnDef.header),
-      dataKey: header.column.id,
-    }));
+  const handleRedo = () => {};
 
-    const exportData = getRowModel().rows.map((row) => {
-      const rowData: { [key: string]: any } = {};
-      row.getAllCells().forEach((cell) => {
-        rowData[cell.column.id] = cell.getValue();
-      });
-      return rowData;
-    });
-
-    exportToPDF(exportColumns, exportData);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      const result = evt.target?.result;
-      if (!result) return;
-
-      const { data, columns } = importTableFromExcel(result as ArrayBuffer);
-      setData(data);
-      setColumns(columns);
-    };
-    reader.readAsArrayBuffer(file);
-  };
-
-  const handleShare = () => {
-    navigatorShare('/');
-  };
+  const handleClearFormatting = () => {};
 
   return (
-    <div className="w-full flex justify-between items-center py-1 border-b border-border">
-      {/* left side */}
-      <div className="flex gap-1 items-center">
-        <button className="hidden md:flex items-center justify-center gap-1 w-22 py-2 rounded-md hover:bg-secondary/30">
-          <p>Tool bar</p>
-          <img src="/icons/ChevronDouble.svg" alt="ChevronDouble icon" />
+    <div className="flex items-center gap-2 py-1 border-b border-border whitespace-nowrap overflow-scroll scrollbar-hide">
+      {/* Bold */}
+      <button
+        onClick={() => setIsBold(!isBold)}
+        className={cn('p-2 rounded hover:bg-secondary/50', isBold && 'bg-secondary')}
+      >
+        <Bold className="w-4 h-4" />
+      </button>
+
+      {/* Italic */}
+      <button
+        onClick={() => setIsItalic(!isItalic)}
+        className={cn('p-2 rounded hover:bg-secondary/50', isItalic && 'bg-secondary')}
+      >
+        <Italic className="w-4 h-4" />
+      </button>
+
+      {/* Underline */}
+      <button
+        onClick={() => setIsUnderline(!isUnderline)}
+        className={cn('p-2 rounded hover:bg-secondary/50', isUnderline && 'bg-secondary')}
+      >
+        <Underline className="w-4 h-4" />
+      </button>
+
+      {/* Strikethrough */}
+      <button
+        onClick={() => setIsStrikethrough(!isStrikethrough)}
+        className={cn('p-2 rounded hover:bg-secondary/50', isStrikethrough && 'bg-secondary')}
+      >
+        <Strikethrough className="w-4 h-4" />
+      </button>
+
+      {/* Font Size */}
+      <select
+        value={fontSize}
+        onChange={(e) => setFontSize(e.target.value)}
+        className="outline-0 border border-border rounded p-1 text-sm"
+      >
+        {fontSizes.map((size) => (
+          <option key={size} value={size}>
+            {size}
+          </option>
+        ))}
+      </select>
+
+      {/* Font Family */}
+      <select
+        value={fontFamily}
+        onChange={(e) => setFontFamily(e.target.value)}
+        className="outline-0 border border-border rounded p-1 text-sm"
+      >
+        {fontFamilies.map((family) => (
+          <option key={family} value={family}>
+            {family}
+          </option>
+        ))}
+      </select>
+
+      {/* Alignment */}
+      <div className="flex space-x-1 px-6">
+        <button
+          onClick={() => setAlignment('left')}
+          className={cn(
+            'p-2 rounded hover:bg-secondary/50',
+            alignment === 'left' && 'bg-secondary',
+          )}
+        >
+          <AlignLeft className="w-4 h-4" />
         </button>
-        <div className="hidden md:block w-1 h-5 border-r-2 border-border"></div>
-        <button className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30">
-          <img src="/icons/Eye.svg" alt="Eye icon" />
-          <p className="hidden lg:block">Hide fields</p>
+        <button
+          onClick={() => setAlignment('center')}
+          className={cn(
+            'p-2 rounded hover:bg-secondary/50',
+            alignment === 'center' && 'bg-secondary',
+          )}
+        >
+          <AlignCenter className="w-4 h-4" />
         </button>
-        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30">
-          <img src="/icons/Sort.svg" alt="Sort icon" />
-          <p className="hidden lg:block">Sort</p>
+        <button
+          onClick={() => setAlignment('right')}
+          className={cn(
+            'p-2 rounded hover:bg-secondary/50',
+            alignment === 'right' && 'bg-secondary',
+          )}
+        >
+          <AlignRight className="w-4 h-4" />
         </button>
-        <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30">
-          <img src="/icons/Filter.svg" alt="Filter icon" />
-          <p className="hidden lg:block">Filter</p>
-        </button>
-        <button className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30">
-          <img src="/icons/ArrowAutofit.svg" alt="Arrow Autofit icon" />
-          <p className="hidden lg:block">Cell View</p>
+        <button
+          onClick={() => setAlignment('justify')}
+          className={cn(
+            'p-2 rounded hover:bg-secondary/50',
+            alignment === 'justify' && 'bg-secondary',
+          )}
+        >
+          <AlignJustify className="w-4 h-4" />
         </button>
       </div>
 
-      {/* right side */}
-      <div className="flex gap-1">
-        <label
-          htmlFor="file"
-          className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
-        >
-          <img src="/icons/Download.svg" alt="Download icon" />
-          <p className="hidden lg:block">Import</p>
-          <input id="file" type="file" accept=".xlsx, .xls" onChange={handleFileUpload} hidden />
-        </label>
-        <button
-          className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
-          onClick={handleExport}
-        >
-          <img src="/icons/Upload.svg" alt="Upload icon" />
-          <p className="hidden lg:block">Export</p>
-        </button>
-        <button
-          className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md border border-secondary text-secondary-foreground hover:bg-secondary/30 hover:cursor-pointer"
-          onClick={handleShare}
-        >
-          <img src="/icons/Share.svg" alt="Share icon" />
-          <p className="hidden lg:block">Share</p>
-        </button>
-        <button className="flex items-center justify-center gap-1 lg:w-38 px-2 py-2 rounded-md bg-primary text-white hover:bg-primary/90 hover:cursor-pointer">
-          <img src="/icons/ArrowSplit.svg" alt="Arrow split icon" />
-          <p className="hidden lg:block">New Action</p>
-        </button>
-      </div>
+      {/* Undo */}
+      <button onClick={handleUndo} className="p-2 rounded hover:bg-secondary/50">
+        <Undo className="w-4 h-4" />
+      </button>
+
+      {/* Redo */}
+      <button onClick={handleRedo} className="p-2 rounded hover:bg-secondary/50">
+        <Redo className="w-4 h-4" />
+      </button>
+
+      {/* Clear formatting */}
+      <button onClick={handleClearFormatting} className="p-2 rounded hover:bg-secondary/50">
+        <Eraser className="w-4 h-4" />
+      </button>
     </div>
   );
 }

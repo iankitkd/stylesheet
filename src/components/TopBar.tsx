@@ -96,7 +96,7 @@ export default function TopBar() {
 
       {isProfilModalOpen && (
         <ModalWrapper title="Profile" onClose={() => setIsProfileModalOpen(false)}>
-          <div className="grid grid-cols-5 gap-2 place-items-baseline min-w-md pb-20">
+          <div className="grid grid-cols-5 gap-2 place-items-baseline md:min-w-md pb-20">
             <div className="font-medium text-lg">Name</div>
             {isNameEditing ? (
               <input

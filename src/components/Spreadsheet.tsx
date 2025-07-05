@@ -10,7 +10,7 @@ import { getColumns } from './columns';
 import { field, getEmptyField } from '../data';
 import type { FieldType } from '../data';
 import TopBar from './TopBar';
-import ToolBar from './ToolBar';
+import MenuBar from './MenuBar';
 import BottomBar from './BottomBar';
 import TableView from './TableView';
 
@@ -52,7 +52,7 @@ export default function Spreadsheet() {
     <TableProvider value={table}>
       <div className="flex flex-col w-full h-full">
         <TopBar />
-        <ToolBar setData={setData} setColumns={setColumns} />
+        <MenuBar setData={setData} setColumns={setColumns} />
         <div className="overflow-auto flex-1">
           <TableView />
         </div>

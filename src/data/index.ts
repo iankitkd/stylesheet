@@ -10,9 +10,9 @@ export type FieldType = {
   dueDate: string;
   estValue: string;
 };
-export function getEmptyField(length: number): FieldType[] {
+export function getEmptyField(length: number, offset = 0): FieldType[] {
   return Array.from({ length: length }, (_, i) => ({
-    id: i + 1,
+    id: offset + i + 1,
     request: '',
     submitted: '',
     status: '',

@@ -1,15 +1,25 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import ModalWrapper from './ModalWrapper';
 import { Pen, Save } from 'lucide-react';
+import { debounce } from '../utils/debounce';
 
-export default function TopBar() {
+interface TopbarProps {
+  setGlobalFilter: (value: string) => void;
+}
+
+export default function TopBar({ setGlobalFilter }: TopbarProps) {
   const [name, setName] = useState('Jonn Doe');
   const [email, setEmail] = useState('john.doe@gmail.com');
   const [isProfilModalOpen, setIsProfileModalOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isNameEditing, setIsNameEditing] = useState(false);
   const [isEmailEditing, setIsEmailEditing] = useState(false);
+
+  const debouncedSetGlobalFilter = useMemo(
+    () => debounce((value: string) => setGlobalFilter(value), 500),
+    [setGlobalFilter],
+  );
 
   return (
     <div className="">
@@ -56,6 +66,7 @@ export default function TopBar() {
               name="search"
               id="search"
               placeholder="Search within sheet"
+              onChange={(e) => debouncedSetGlobalFilter(e.target.value)}
               className="w-full pl-8 pr-2 py-2 rounded-md placeholder:text-tertiary-foreground outline-0 focus-visible:ring-secondary-foreground/50 focus-visible:ring-[1px]"
             />
           </div>
@@ -96,7 +107,7 @@ export default function TopBar() {
 
       {isProfilModalOpen && (
         <ModalWrapper title="Profile" onClose={() => setIsProfileModalOpen(false)}>
-          <div className="grid grid-cols-5 gap-2 place-items-baseline md:min-w-md pb-20">
+          <div className="grid grid-cols-6 gap-2 place-items-baseline max-w-full md:max-w-md pb-20">
             <div className="font-medium text-lg">Name</div>
             {isNameEditing ? (
               <input
@@ -104,13 +115,13 @@ export default function TopBar() {
                 value={name}
                 autoFocus
                 onChange={(e) => setName(e.target.value)}
-                className="col-span-3 px-1 outline-0 rounded-md focus-visible:ring-tertiary-foreground/50 focus-visible:ring-[1px] focus-visible:bg-secondary/30"
+                className="col-span-4 w-full px-2 py-1 outline-0 rounded-md focus-visible:ring-tertiary-foreground/50 focus-visible:ring-[1px] focus-visible:bg-secondary/30"
               />
             ) : (
-              <div className="col-span-3">{name}</div>
+              <div className="col-span-4 px-2 py-1">{name}</div>
             )}
             <button
-              className="text-muted-foreground cursor-pointer"
+              className="justify-self-end text-muted-foreground cursor-pointer"
               onClick={() => setIsNameEditing((prev) => !prev)}
             >
               {isNameEditing ? <Save size={16} /> : <Pen size={16} />}
@@ -123,13 +134,13 @@ export default function TopBar() {
                 value={email}
                 autoFocus
                 onChange={(e) => setEmail(e.target.value)}
-                className="col-span-3 px-1 outline-0 rounded-md focus-visible:ring-tertiary-foreground/50 focus-visible:ring-[1px] focus-visible:bg-secondary/30"
+                className="col-span-4 w-full px-2 py-1 outline-0 rounded-md focus-visible:ring-tertiary-foreground/50 focus-visible:ring-[1px] focus-visible:bg-secondary/30"
               />
             ) : (
-              <div className="col-span-3">{email}</div>
+              <div className="col-span-4 px-2 py-1">{email}</div>
             )}
             <button
-              className="text-muted-foreground cursor-pointer"
+              className="justify-self-end text-muted-foreground cursor-pointer"
               onClick={() => setIsEmailEditing((prev) => !prev)}
             >
               {isEmailEditing ? <Save size={16} /> : <Pen size={16} />}

@@ -20,7 +20,7 @@ export default function ModalWrapper({ children, title, onClose }: ModalWrapperP
       onClick={handleBackdropClick}
     >
       <div
-        className="relative w-full max-w-md p-6 bg-background rounded-2xl shadow-xl"
+        className="relative w-full max-w-md p-4 md:p-6 bg-background rounded-2xl shadow-xl"
         onClick={handleCardClick}
       >
         <button

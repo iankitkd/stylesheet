@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
+import {
+  useReactTable,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+} from '@tanstack/react-table';
 
 import type { ColumnDef, RowData } from '@tanstack/react-table';
 
@@ -13,6 +18,8 @@ import TopBar from './TopBar';
 import MenuBar from './MenuBar';
 import BottomBar from './BottomBar';
 import TableView from './TableView';
+import EditableCell from './EditableCell';
+import CustomHeader from './CustomHeader';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -21,14 +28,27 @@ declare module '@tanstack/react-table' {
 }
 
 export default function Spreadsheet() {
-  const [data, setData] = useState<FieldType[]>([...field, ...getEmptyField(45)]);
+  const [data, setData] = useState<FieldType[]>([...field, ...getEmptyField(45, 5)]);
   const [columns, setColumns] = useState<ColumnDef<any, any>[]>(getColumns());
+
+  const [globalFilter, setGlobalFilter] = useState('');
 
   const table = useReactTable({
     data,
     columns,
+    state: {
+      globalFilter,
+    },
+    onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    globalFilterFn: (row, _columnId, filterValue) => {
+      return Object.values(row.original)
+        .join(' ')
+        .toLowerCase()
+        .includes(filterValue.toLowerCase());
+    },
     // Provide our updateData function to our table meta
     meta: {
       updateData: (rowIndex, columnId, value) => {
@@ -48,11 +68,31 @@ export default function Spreadsheet() {
     debugTable: true,
   });
 
+  const addColumn = (newColumnName: string) => {
+    if (!newColumnName.trim()) return;
+
+    setColumns((prev) => [
+      ...prev,
+      {
+        accessorKey: newColumnName,
+        header: () => <CustomHeader label={newColumnName} haveDropdown={true} />,
+        cell: (info) => <EditableCell {...info} />,
+      },
+    ]);
+
+    setData((prev) =>
+      prev.map((item) => ({
+        ...item,
+        [newColumnName]: '',
+      })),
+    );
+  };
+
   return (
     <TableProvider value={table}>
       <div className="flex flex-col w-full h-full">
-        <TopBar />
-        <MenuBar setData={setData} setColumns={setColumns} />
+        <TopBar setGlobalFilter={setGlobalFilter} />
+        <MenuBar setData={setData} setColumns={setColumns} addColumn={addColumn} />
         <div className="overflow-auto flex-1">
           <TableView />
         </div>

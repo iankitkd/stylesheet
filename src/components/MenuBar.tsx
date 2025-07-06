@@ -5,6 +5,7 @@ import Toolbar from './ToolBar';
 import ModalWrapper from './ModalWrapper';
 
 import { useTableContext } from '../contexts/TableContext';
+import type { CustomColumnMeta } from './columns';
 
 import { exportToPDF } from '../utils/tableExport';
 import { navigatorShare } from '../utils/navigatorShare';
@@ -36,8 +37,10 @@ export default function MenuBar({ setData, setColumns, addColumn }: ToolBarProps
   };
 
   const handleExport = () => {
-    const exportColumns = getHeaderGroups()[0].headers.map((header) => ({
-      header: String(header.column.columnDef.header),
+    const headerGroups = getHeaderGroups();
+    const lastHeaderGroup = headerGroups[headerGroups.length - 1];
+    const exportColumns = lastHeaderGroup.headers.map((header) => ({
+      exportLabel: (header.column.columnDef.meta as CustomColumnMeta)?.exportLabel,
       dataKey: header.column.id,
     }));
 

@@ -4,6 +4,10 @@ import type { FieldType } from '../data';
 import EditableCell from './EditableCell';
 import CustomHeader from './CustomHeader';
 
+export type CustomColumnMeta = {
+  exportLabel: string;
+};
+
 const columnHelper = createColumnHelper<FieldType>();
 
 export function getColumns() {
@@ -14,6 +18,7 @@ export function getColumns() {
           <img src="/icons/Hash.svg" alt="Hash icon" />
         </div>
       ),
+      meta: { exportLabel: '#' },
       size: 20,
       cell: ({ row }) => <div className="p-2">{row.index + 1}</div>,
     }),
@@ -35,6 +40,7 @@ export function getColumns() {
           header: () => (
             <CustomHeader label="Job Request" iconSrc="/icons/Briefcase.svg" haveDropdown={true} />
           ),
+          meta: { exportLabel: 'Job Request' },
           size: 256,
           cell: (info) => <EditableCell {...info} />,
         }),
@@ -42,6 +48,7 @@ export function getColumns() {
           header: () => (
             <CustomHeader label="Submitted" iconSrc="/icons/Calendar.svg" haveDropdown={true} />
           ),
+          meta: { exportLabel: 'Submitted' },
           size: 130,
           cell: (info) => <EditableCell {...info} />,
         }),
@@ -49,6 +56,7 @@ export function getColumns() {
           header: () => (
             <CustomHeader label="Status" iconSrc="/icons/ChevronCircle.svg" haveDropdown={true} />
           ),
+          meta: { exportLabel: 'Status' },
           size: 140,
           cell: (info) => (
             <div className="p-2 text-center">
@@ -75,6 +83,7 @@ export function getColumns() {
           header: () => (
             <CustomHeader label="Submitter" iconSrc="/icons/Person.svg" haveDropdown={true} />
           ),
+          meta: { exportLabel: 'Submitter' },
           size: 130,
           cell: (info) => <EditableCell {...info} />,
         }),
@@ -83,6 +92,7 @@ export function getColumns() {
 
     columnHelper.accessor('url', {
       header: () => <CustomHeader label="URL" iconSrc="/icons/Globe.svg" haveDropdown={true} />,
+      meta: { exportLabel: 'URL' },
       size: 120,
       cell: (info) => (
         <div className="p-2 w-30 text-ellipsis overflow-hidden">
@@ -116,6 +126,7 @@ export function getColumns() {
               className="bg-[#E8F0E9] text-[#666C66]"
             />
           ),
+          meta: { exportLabel: 'Assigned' },
           size: 120,
           cell: (info) => <EditableCell {...info} />,
         }),
@@ -138,6 +149,7 @@ export function getColumns() {
       columns: [
         columnHelper.accessor('priority', {
           header: () => <CustomHeader label="Priority" className="bg-[#EAE3FC] text-[#655C80]" />,
+          meta: { exportLabel: 'Priority' },
           size: 96,
           cell: (info) => (
             <div className="p-2 text-center">
@@ -158,6 +170,7 @@ export function getColumns() {
         }),
         columnHelper.accessor('dueDate', {
           header: () => <CustomHeader label="Due Date" className="bg-[#EAE3FC] text-[#655C80]" />,
+          meta: { exportLabel: 'Due Date' },
           size: 108,
           cell: (info) => <EditableCell {...info} />,
         }),
@@ -181,6 +194,7 @@ export function getColumns() {
       columns: [
         columnHelper.accessor('estValue', {
           header: () => <CustomHeader label="Est. Value" className="bg-[#FFE9E0] text-[#8C6C62]" />,
+          meta: { exportLabel: 'Est. Value' },
           size: 108,
           cell: (info) => (
             <div className="flex gap-1 justify-end items-center">

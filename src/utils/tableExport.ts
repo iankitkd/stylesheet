@@ -2,8 +2,8 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 interface TableColumn {
-  header: string;
   dataKey: string;
+  exportLabel: string;
 }
 type TableData = Record<string, any>;
 
@@ -13,7 +13,7 @@ export const exportToPDF = (columns: TableColumn[], data: TableData[]) => {
   doc.text('Stylesheet 3', 14, 20);
 
   // Build table head (headers)
-  const tableHead = [columns.map((col) => col.header)];
+  const tableHead = [columns.map((col) => col.exportLabel || col.dataKey)];
 
   // Build table body (rows)
   // const tableRows = data.map((row) => columns.map((col) => row[col.dataKey]));

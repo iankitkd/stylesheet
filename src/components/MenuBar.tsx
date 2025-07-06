@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef, SortingState } from '@tanstack/react-table';
 
 import Toolbar from './ToolBar';
 import ModalWrapper from './ModalWrapper';
@@ -16,9 +16,21 @@ interface ToolBarProps {
   setData: (data: any[]) => void;
   setColumns: (columns: ColumnDef<any, any>[]) => void;
   addColumn: (newColumnName: string) => void;
+  columnVisibility: {};
+  sorting: SortingState;
+  isFilterVisible: boolean;
+  setIsFilterVisible: (value: boolean) => void;
 }
 
-export default function MenuBar({ setData, setColumns, addColumn }: ToolBarProps) {
+export default function MenuBar({
+  setData,
+  setColumns,
+  addColumn,
+  columnVisibility,
+  sorting,
+  isFilterVisible,
+  setIsFilterVisible,
+}: ToolBarProps) {
   const table = useTableContext();
   const { getHeaderGroups, getRowModel } = table;
 
@@ -81,7 +93,7 @@ export default function MenuBar({ setData, setColumns, addColumn }: ToolBarProps
         {/* left side */}
         <div className="flex gap-1 items-center">
           <button
-            className="flex items-center justify-center gap-1 w-8 lg:w-22 px-2 lg:px-0 py-2 rounded-md hover:bg-secondary/30 cursor-pointer"
+            className={`flex items-center justify-center gap-1 w-8 lg:w-22 px-2 lg:px-0 py-2 rounded-md hover:bg-secondary/30 cursor-pointer ${isToolsVisible && 'bg-secondary'}`}
             onClick={() => setIsToolsVisible(!isToolsVisible)}
           >
             <p className="hidden lg:block">Tool bar</p>
@@ -93,24 +105,30 @@ export default function MenuBar({ setData, setColumns, addColumn }: ToolBarProps
           </button>
           <div className="hidden md:block w-1 h-5 border-r-2 border-border"></div>
           <button
-            className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer"
+            className={`flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer ${Object.values(columnVisibility).some((val) => val == false) && 'bg-secondary'}`}
             onClick={() => setIsHideColumnModal(true)}
           >
             <img src="/icons/Eye.svg" alt="Eye icon" />
             <p className="hidden lg:block">Hide fields</p>
           </button>
           <button
-            className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer"
+            className={`flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer ${sorting.length > 0 && 'bg-secondary'}`}
             onClick={() => setIsSortModal(true)}
           >
             <img src="/icons/Sort.svg" alt="Sort icon" />
             <p className="hidden lg:block">Sort</p>
           </button>
-          <button className="flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer">
+          <button
+            className={`flex items-center justify-center gap-1 lg:w-22 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer ${isFilterVisible && 'bg-secondary'}`}
+            onClick={() => setIsFilterVisible(!isFilterVisible)}
+          >
             <img src="/icons/Filter.svg" alt="Filter icon" />
             <p className="hidden lg:block">Filter</p>
           </button>
-          <button className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer">
+          <button
+            className="flex items-center justify-center gap-1 lg:w-30 px-2 py-2 rounded-md hover:bg-secondary/30 cursor-pointer"
+            onClick={() => alert('Cell View')}
+          >
             <img src="/icons/ArrowAutofit.svg" alt="Arrow Autofit icon" />
             <p className="hidden lg:block">Cell View</p>
           </button>

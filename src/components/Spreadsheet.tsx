@@ -7,7 +7,7 @@ import {
   getSortedRowModel,
 } from '@tanstack/react-table';
 
-import type { ColumnDef, RowData } from '@tanstack/react-table';
+import type { ColumnDef, RowData, SortingState } from '@tanstack/react-table';
 
 import { TableProvider } from '../contexts/TableContext';
 import { getColumns } from './columns';
@@ -32,14 +32,21 @@ export default function Spreadsheet() {
   const [columns, setColumns] = useState<ColumnDef<any, any>[]>(getColumns());
 
   const [globalFilter, setGlobalFilter] = useState('');
+  const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState({});
 
   const table = useReactTable({
     data,
     columns,
     state: {
       globalFilter,
+      columnVisibility,
+      sorting,
     },
     onGlobalFilterChange: setGlobalFilter,
+    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -92,9 +99,17 @@ export default function Spreadsheet() {
     <TableProvider value={table}>
       <div className="flex flex-col w-full h-full">
         <TopBar setGlobalFilter={setGlobalFilter} />
-        <MenuBar setData={setData} setColumns={setColumns} addColumn={addColumn} />
+        <MenuBar
+          setData={setData}
+          setColumns={setColumns}
+          addColumn={addColumn}
+          columnVisibility={columnVisibility}
+          sorting={sorting}
+          isFilterVisible={isFilterVisible}
+          setIsFilterVisible={setIsFilterVisible}
+        />
         <div className="overflow-auto flex-1">
-          <TableView />
+          <TableView isFilterVisible={isFilterVisible} />
         </div>
         <BottomBar setData={setData} setColumns={setColumns} />
       </div>

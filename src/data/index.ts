@@ -31,7 +31,7 @@ export const field: FieldType[] = [
     request: 'Launch social media campaign for pro',
     submitted: '15-11-2024',
     status: 'In-process',
-    submitter: 'Aishs Patel',
+    submitter: 'Aisha Patel',
     url: 'www.aishapatel.com',
     assigned: 'Sophie Choudhury',
     priority: 'Medium',

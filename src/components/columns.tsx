@@ -14,12 +14,13 @@ export function getColumns() {
   return [
     columnHelper.accessor('id', {
       header: () => (
-        <div className="px-2">
+        <div className="w-5 mx-auto">
           <img src="/icons/Hash.svg" alt="Hash icon" />
         </div>
       ),
       meta: { exportLabel: '#' },
       size: 20,
+      enableColumnFilter: false,
       cell: ({ row }) => <div className="p-2">{row.index + 1}</div>,
     }),
     columnHelper.group({

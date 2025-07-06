@@ -9,15 +9,17 @@ export default function TableView() {
     <table className="table-auto border-0 border-border-table">
       <thead className="sticky top-0">
         {getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id} className="text-tertiary-foreground bg-secondary">
+          <tr key={headerGroup.id} className="bg-secondary text-secondary-foreground">
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className="border-x border-border-table text-left p-2"
+                className="border-x border-border-table text-left"
                 style={{ minWidth: `${header.column.getSize()}px` }}
               >
-                {flexRender(header.column.columnDef.header, header.getContext())}
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(header.column.columnDef.header, header.getContext())}
               </th>
             ))}
           </tr>

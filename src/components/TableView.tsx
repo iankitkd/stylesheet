@@ -13,19 +13,22 @@ export default function TableView({ isFilterVisible }: TableViewProps) {
     <table className="table-auto border-0 border-border-table">
       <thead className="sticky top-0">
         {getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id} className="bg-secondary text-secondary-foreground">
+          <tr key={headerGroup.id} className="bg-background text-secondary-foreground">
             {headerGroup.headers.map((header) => (
               <th
                 key={header.id}
                 colSpan={header.colSpan}
-                className="border-x border-border-table text-left"
+                className="border-x border-border-table"
                 style={{ minWidth: `${header.column.getSize()}px` }}
               >
                 {header.isPlaceholder ? null : (
                   <>
                     {flexRender(header.column.columnDef.header, header.getContext())}
                     {isFilterVisible && header.column.getCanFilter() && (
-                      <div className="font-normal w-full">
+                      <div
+                        className="font-normal w-full"
+                        style={{ width: `${header.column.getSize()}px` }}
+                      >
                         <input
                           type="text"
                           value={(header.column.getFilterValue() ?? '') as string}

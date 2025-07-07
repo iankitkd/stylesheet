@@ -1,6 +1,7 @@
 # Stylesheet
 
 ## Features
+
 - Spreadsheet-style UI for easy data interaction.
 - Edit cells on the fly.
 - Create, search, sort, filter, and hide columns effortlessly.
@@ -8,6 +9,7 @@
 - Responsive design for seamless use on all devices.
 
 ## Tech Stack
+
 - React
 - TypeScript
 - Tailwind CSS
@@ -15,6 +17,7 @@
 - Vite
 
 ## Getting Started
+
 1. Clone the repository:
    ```sh
    git clone https://github.com/iankitkd/stylesheet.git

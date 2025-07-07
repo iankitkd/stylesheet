@@ -14,8 +14,8 @@ export function getColumns() {
   return [
     columnHelper.accessor('id', {
       header: () => (
-        <div className="w-5 mx-auto">
-          <img src="/icons/Hash.svg" alt="Hash icon" />
+        <div className="w-9 h-10 flex justify-center items-center bg-secondary">
+          <img src="/icons/Hash.svg" alt="Hash icon" className="w-5 h-5" />
         </div>
       ),
       meta: { exportLabel: '#' },
@@ -124,7 +124,7 @@ export function getColumns() {
             <CustomHeader
               label="Assigned"
               iconSrc="/icons/Emoji.svg"
-              className="bg-[#E8F0E9] text-[#666C66]"
+              colors="bg-[#E8F0E9] text-[#666C66]"
             />
           ),
           meta: { exportLabel: 'Assigned' },
@@ -149,7 +149,7 @@ export function getColumns() {
       ),
       columns: [
         columnHelper.accessor('priority', {
-          header: () => <CustomHeader label="Priority" className="bg-[#EAE3FC] text-[#655C80]" />,
+          header: () => <CustomHeader label="Priority" colors="bg-[#EAE3FC] text-[#655C80]" />,
           meta: { exportLabel: 'Priority' },
           size: 96,
           cell: (info) => (
@@ -170,7 +170,7 @@ export function getColumns() {
           ),
         }),
         columnHelper.accessor('dueDate', {
-          header: () => <CustomHeader label="Due Date" className="bg-[#EAE3FC] text-[#655C80]" />,
+          header: () => <CustomHeader label="Due Date" colors="bg-[#EAE3FC] text-[#655C80]" />,
           meta: { exportLabel: 'Due Date' },
           size: 108,
           cell: (info) => <EditableCell {...info} />,
@@ -194,7 +194,7 @@ export function getColumns() {
       ),
       columns: [
         columnHelper.accessor('estValue', {
-          header: () => <CustomHeader label="Est. Value" className="bg-[#FFE9E0] text-[#8C6C62]" />,
+          header: () => <CustomHeader label="Est. Value" colors="bg-[#FFE9E0] text-[#8C6C62]" />,
           meta: { exportLabel: 'Est. Value' },
           size: 108,
           cell: (info) => (

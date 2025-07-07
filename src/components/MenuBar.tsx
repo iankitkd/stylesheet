@@ -10,7 +10,7 @@ import type { CustomColumnMeta } from './columns';
 import { exportToPDF } from '../utils/tableExport';
 import { navigatorShare } from '../utils/navigatorShare';
 import { importTableFromExcel } from '../utils/tableImport';
-import { cn } from '../lib/utils';
+import AddColumn from './AddColumn';
 
 interface ToolBarProps {
   setData: (data: any[]) => void;
@@ -34,27 +34,20 @@ export default function MenuBar({
   const table = useTableContext();
   const { getHeaderGroups, getRowModel } = table;
 
-  const [newColumnName, setNewColumnName] = useState('');
   const [isToolsVisible, setIsToolsVisible] = useState(false);
   const [isNewActionModal, setIsNewActionModal] = useState(false);
   const [isHideColumnModal, setIsHideColumnModal] = useState(false);
   const [isSortModal, setIsSortModal] = useState(false);
 
-  const handleCreate = () => {
-    if (!newColumnName) return;
-
-    addColumn(newColumnName);
-    setNewColumnName('');
-    setIsNewActionModal(false);
-  };
-
   const handleExport = () => {
     const headerGroups = getHeaderGroups();
     const lastHeaderGroup = headerGroups[headerGroups.length - 1];
-    const exportColumns = lastHeaderGroup.headers.map((header) => ({
-      exportLabel: (header.column.columnDef.meta as CustomColumnMeta)?.exportLabel,
-      dataKey: header.column.id,
-    }));
+    const exportColumns = lastHeaderGroup.headers
+      .filter((header) => header.column.id !== 'emptycol')
+      .map((header) => ({
+        exportLabel: (header.column.columnDef.meta as CustomColumnMeta)?.exportLabel,
+        dataKey: header.column.id,
+      }));
 
     const exportData = getRowModel().rows.map((row) => {
       const rowData: { [key: string]: any } = {};
@@ -171,45 +164,28 @@ export default function MenuBar({
       {isToolsVisible && <Toolbar />}
 
       {isNewActionModal && (
-        <ModalWrapper title="Add New Column" onClose={() => setIsNewActionModal(false)}>
-          <div className="text-center space-y-6 pb-8">
-            <input
-              type="text"
-              value={newColumnName}
-              onChange={(e) => setNewColumnName(e.target.value)}
-              autoFocus
-              className="w-full p-2 rounded-md border border-tertiary-foreground/50 outline-0 focus-visible:ring-tertiary-foreground/50 focus-visible:ring-[1px] focus-visible:bg-secondary/30"
-            />
-            <button
-              className={cn(
-                'font-semibold text-lg w-full px-10 py-1 rounded-full bg-primary text-primary-foreground cursor-pointer',
-                newColumnName === '' && 'bg-primary/70',
-              )}
-              onClick={handleCreate}
-              disabled={newColumnName === ''}
-            >
-              Create
-            </button>
-          </div>
-        </ModalWrapper>
+        <AddColumn addColumn={addColumn} onclose={() => setIsNewActionModal(false)} />
       )}
 
       {isHideColumnModal && (
         <ModalWrapper title="Show / hide Columns" onClose={() => setIsHideColumnModal(false)}>
           <div className="grid grid-cols-2 gap-2 py-2">
-            {table.getAllLeafColumns().map((column) => (
-              <label
-                key={column.id}
-                className="inline-flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-secondary/50 cursor-pointer"
-              >
-                <input
-                  type="checkbox"
-                  checked={column.getIsVisible()}
-                  onChange={column.getToggleVisibilityHandler()}
-                />
-                <span>{column.id}</span>
-              </label>
-            ))}
+            {table
+              .getAllLeafColumns()
+              .filter((column) => column.id !== 'emptycol')
+              .map((column) => (
+                <label
+                  key={column.id}
+                  className="inline-flex items-center gap-2 px-2 py-1 rounded-lg hover:bg-secondary/50 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={column.getIsVisible()}
+                    onChange={column.getToggleVisibilityHandler()}
+                  />
+                  <span>{column.id}</span>
+                </label>
+              ))}
           </div>
         </ModalWrapper>
       )}
@@ -217,20 +193,23 @@ export default function MenuBar({
       {isSortModal && (
         <ModalWrapper title="Sort Columns" onClose={() => setIsSortModal(false)}>
           <div className="grid grid-cols-2 gap-2 py-2">
-            {table.getAllLeafColumns().map((column) => (
-              <label
-                key={column.id}
-                className="inline-flex items-center justify-between w-32 gap-2 px-2 py-1 rounded-lg hover:bg-secondary/50 cursor-pointer"
-                onClick={column.getToggleSortingHandler()}
-              >
-                <span>{column.id}</span>
-                <span className="text-primary font-semibold text-xl">
-                  {!column.getIsSorted() && '\u21C5'}
-                  {column.getIsSorted() === 'asc' && '\u2193'}
-                  {column.getIsSorted() === 'desc' && '\u2191'}
-                </span>
-              </label>
-            ))}
+            {table
+              .getAllLeafColumns()
+              .filter((column) => column.id !== 'emptycol')
+              .map((column) => (
+                <label
+                  key={column.id}
+                  className="inline-flex items-center justify-between w-32 gap-2 px-2 py-1 rounded-lg hover:bg-secondary/50 cursor-pointer"
+                  onClick={column.getToggleSortingHandler()}
+                >
+                  <span>{column.id}</span>
+                  <span className="text-primary font-semibold text-xl">
+                    {!column.getIsSorted() && '\u21C5'}
+                    {column.getIsSorted() === 'asc' && '\u2193'}
+                    {column.getIsSorted() === 'desc' && '\u2191'}
+                  </span>
+                </label>
+              ))}
           </div>
         </ModalWrapper>
       )}

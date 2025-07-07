@@ -20,6 +20,7 @@ import BottomBar from './BottomBar';
 import TableView from './TableView';
 import EditableCell from './EditableCell';
 import CustomHeader from './CustomHeader';
+import AddColumn from './AddColumn';
 
 declare module '@tanstack/react-table' {
   interface TableMeta<TData extends RowData> {
@@ -28,8 +29,36 @@ declare module '@tanstack/react-table' {
 }
 
 export default function Spreadsheet() {
+  const [isNewColumnModal, setIsNewColumnModal] = useState(false);
+
+  const lastColumn = {
+    id: 'newColButton',
+    header: () => (
+      <div
+        className="p-2 w-24 h-10 bg-secondary flex justify-center cursor-pointer hover:opacity-80 border-x-2 border-dashed border-[#CBCBCB]"
+        onClick={() => setIsNewColumnModal(true)}
+      >
+        {' '}
+        <img src="/icons/Plus.svg" alt="Plus icon" />{' '}
+      </div>
+    ),
+    size: 96,
+    enableColumnFilter: false,
+    columns: [
+      {
+        id: 'emptycol',
+        size: 96,
+        enableSorting: false,
+        enableHiding: false,
+        enableColumnFilter: false,
+        header: <div className="w-24 h-10 border-x-2 border-dashed border-[#CBCBCB]"></div>,
+        cell: <div className="w-24 h-10 border-x-2 border-dashed border-[#CBCBCB]"></div>,
+      },
+    ],
+  };
+
   const [data, setData] = useState<FieldType[]>([...field, ...getEmptyField(45, 5)]);
-  const [columns, setColumns] = useState<ColumnDef<any, any>[]>(getColumns());
+  const [columns, setColumns] = useState<ColumnDef<any, any>[]>([...getColumns(), lastColumn]);
 
   const [globalFilter, setGlobalFilter] = useState('');
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -78,13 +107,18 @@ export default function Spreadsheet() {
   const addColumn = (newColumnName: string) => {
     if (!newColumnName.trim()) return;
 
-    setColumns((prev) => [
-      ...prev,
+    const currSize = columns.length;
+
+    setColumns([
+      ...columns.slice(0, currSize - 1),
       {
+        id: newColumnName,
         accessorKey: newColumnName,
+        meta: { exportLabel: newColumnName },
         header: () => <CustomHeader label={newColumnName} haveDropdown={true} />,
         cell: (info) => <EditableCell {...info} />,
       },
+      columns[currSize - 1],
     ]);
 
     setData((prev) =>
@@ -113,6 +147,10 @@ export default function Spreadsheet() {
         </div>
         <BottomBar setData={setData} setColumns={setColumns} />
       </div>
+
+      {isNewColumnModal && (
+        <AddColumn addColumn={addColumn} onclose={() => setIsNewColumnModal(false)} />
+      )}
     </TableProvider>
   );
 }
